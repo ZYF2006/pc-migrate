@@ -1,0 +1,21 @@
+# 本仓库刻意关闭 git 的一切行尾/编码转换（`-text` = binary-ish，按原始字节存取）。
+#
+# 原因：这些脚本对编码极其敏感，任何转换都会造成真实故障——
+#   * .ps1 必须是 UTF-8 with BOM + CRLF：Windows PowerShell 5.1 没有 BOM 就按
+#     GBK 解码，中文注释会被误解，甚至把后面的代码吞掉，报一堆假语法错误。
+#   * .bat 必须是 GBK(936) + CRLF：cmd.exe 用系统代码页读批处理，转成 UTF-8
+#     后中文提示全变乱码，`chcp 936` 也救不回来。
+#   * .md/.json 是 UTF-8 无 BOM + LF。
+#
+# 用 `-text` 而不是 `text eol=crlf`：后者会让 git 在入库时把 CRLF 规范化成 LF，
+# 而我们的 blob 里存的是 CRLF，结果是 clone 下来 git status 永远显示已修改。
+# `-text` 让 git 完全不碰换行，字节进来什么样、出去就什么样。
+#
+# 代价：如果将来有人在别的编辑器里改了换行，git 不会帮忙纠正，需要自己注意。
+
+* -text
+
+# 明确标记为二进制，避免 git 尝试 diff / 合并这些文件
+*.ps1 -text -diff
+*.bat -text -diff
+*.cmd -text -diff

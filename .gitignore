@@ -1,0 +1,18 @@
+# 运行时产生的文件（不要提交）
+.migrate-config.json
+.last-migrate-ip.txt
+旧机占用报告.txt
+共享清单.txt
+_共享清单.txt
+_日志/
+*.log
+
+# 系统垃圾
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
